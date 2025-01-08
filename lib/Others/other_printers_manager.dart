@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_thermal_printer/flutter_thermal_printer_platform_interface.dart';
 import 'package:flutter_thermal_printer/utils/printer.dart';
+import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 
 class OtherPrinterManager {
   OtherPrinterManager._privateConstructor();
@@ -49,17 +50,21 @@ class OtherPrinterManager {
       return await FlutterThermalPrinterPlatform.instance.connect(device);
     } else {
       try {
-        bool isConnected = false;
-        final bt = BluetoothDevice.fromId(device.address!);
-        await bt.connect();
-        final stream = bt.connectionState.listen((event) {
-          if (event == BluetoothConnectionState.connected) {
-            isConnected = true;
-          }
-        });
-        await Future.delayed(const Duration(seconds: 1));
-        await stream.cancel();
-        return isConnected;
+        // bool isConnected = false;
+        // final bt = BluetoothDevice.fromId(device.address!);
+        // await bt.connect();
+        // final stream = bt.connectionState.listen((event) {
+        //   if (event == BluetoothConnectionState.connected) {
+        //     isConnected = true;
+        //   }
+        // });
+        // await Future.delayed(const Duration(seconds: 1));
+        // await stream.cancel();
+        // return isConnected;
+
+        final res =
+            PrintBluetoothThermal.connect(macPrinterAddress: device.address!);
+        return res;
       } catch (e) {
         return false;
       }
@@ -82,8 +87,9 @@ class OtherPrinterManager {
   Future<void> disconnect(Printer device) async {
     if (device.connectionType == ConnectionType.BLE) {
       try {
-        final bt = BluetoothDevice.fromId(device.address!);
-        await bt.disconnect();
+        // final bt = BluetoothDevice.fromId(device.address!);
+        // await bt.disconnect();
+        await PrintBluetoothThermal.disconnect;
       } catch (e) {
         log('Failed to disconnect device');
       }
