@@ -62,8 +62,8 @@ class OtherPrinterManager {
         // await stream.cancel();
         // return isConnected;
 
-        final res =
-            PrintBluetoothThermal.connect(macPrinterAddress: device.address!);
+        final res = await PrintBluetoothThermal.connect(
+            macPrinterAddress: device.address!);
         return res;
       } catch (e) {
         return false;
