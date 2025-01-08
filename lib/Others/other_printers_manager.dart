@@ -57,7 +57,7 @@ class OtherPrinterManager {
             isConnected = true;
           }
         });
-        // await Future.delayed(const Duration(seconds: 3));
+        await Future.delayed(const Duration(seconds: 1));
         await stream.cancel();
         return isConnected;
       } catch (e) {
