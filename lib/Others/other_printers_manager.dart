@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_thermal_printer/flutter_thermal_printer_platform_interface.dart';
 import 'package:flutter_thermal_printer/utils/printer.dart';
-import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 
 class OtherPrinterManager {
   OtherPrinterManager._privateConstructor();
@@ -87,9 +86,8 @@ class OtherPrinterManager {
   Future<void> disconnect(Printer device) async {
     if (device.connectionType == ConnectionType.BLE) {
       try {
-        // final bt = BluetoothDevice.fromId(device.address!);
-        // await bt.disconnect();
-        await PrintBluetoothThermal.disconnect;
+        final bt = BluetoothDevice.fromId(device.address!);
+        await bt.disconnect();
       } catch (e) {
         log('Failed to disconnect device');
       }
