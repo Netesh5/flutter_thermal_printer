@@ -50,20 +50,17 @@ class OtherPrinterManager {
       return await FlutterThermalPrinterPlatform.instance.connect(device);
     } else {
       try {
-        // bool isConnected = false;
-        // final bt = BluetoothDevice.fromId(device.address!);
-        // await bt.connect();
-        // final stream = bt.connectionState.listen((event) {
-        //   if (event == BluetoothConnectionState.connected) {
-        //     isConnected = true;
-        //   }
-        // });
-        // await Future.delayed(const Duration(seconds: 1));
-        // await stream.cancel();
-        // return isConnected;
-        final res = await PrintBluetoothThermal.connect(
-            macPrinterAddress: device.address!);
-        return res;
+        bool isConnected = false;
+        final bt = BluetoothDevice.fromId(device.address!);
+        await bt.connect();
+        final stream = bt.connectionState.listen((event) {
+          if (event == BluetoothConnectionState.connected) {
+            isConnected = true;
+          }
+        });
+        await Future.delayed(const Duration(seconds: 1));
+        await stream.cancel();
+        return isConnected;
       } catch (e) {
         return false;
       }
@@ -81,6 +78,10 @@ class OtherPrinterManager {
         return false;
       }
     }
+  }
+
+  Future<bool> isBTEnable() async {
+    return await FlutterBluePlus.isOn;
   }
 
   Future<void> disconnect(Printer device) async {
