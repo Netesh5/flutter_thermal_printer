@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:flutter_thermal_printer/flutter_thermal_printer_method_channel.dart';
 import 'package:flutter_thermal_printer/flutter_thermal_printer_platform_interface.dart';
 import 'package:flutter_thermal_printer/utils/printer.dart';
 
@@ -22,6 +23,7 @@ class OtherPrinterManager {
 
   Stream<List<Printer>> get devicesStream => _devicesstream.stream;
   StreamSubscription? subscription;
+  final flutterThermalPrinter = MethodChannelFlutterThermalPrinter();
 
   static String channelName = 'flutter_thermal_printer/events';
   EventChannel eventChannel = EventChannel(channelName);
@@ -46,7 +48,7 @@ class OtherPrinterManager {
 
   Future<bool> connect(Printer device) async {
     if (device.connectionType == ConnectionType.USB) {
-      return await FlutterThermalPrinterPlatform.instance.connect(device);
+      return await flutterThermalPrinter.connect(device);
     } else {
       try {
         bool isConnected = false;
